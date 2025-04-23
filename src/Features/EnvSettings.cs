@@ -96,10 +96,10 @@ public class EnvSettings
     public string OAuthAuthentikUserinfoURL { get; private set; } = "";
 
     //  The following properties are derived from the other settings
-    public bool IsManagedCloud => Region == "EU" || Region == "US";
-    public bool IsBillingEnabled => IsManagedCloud || IsDevelopment;
-    public bool IsProduction => !IsDevelopment;
-    public bool IsDevelopment { get; private set; }
+    public bool IsManagedCloud = false; //=> Region == "EU" || Region == "US";
+    public bool IsBillingEnabled = false; //=> IsManagedCloud || IsDevelopment;
+    public bool IsProduction = true; //=> !IsDevelopment;
+    public bool IsDevelopment = false; //{ get; private set; }
     public string Region { get; private set; } = "";
     public string LemonSqueezyApiKey { get; private set; } = "";
     public string LemonSqueezySigningSecret { get; private set; } = "";
@@ -107,14 +107,14 @@ public class EnvSettings
 
     public static EnvSettings Load()
     {
-        var isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
-        var region = isDevelopment ? "DEV" : Get("REGION").ToUpper();
-        if (string.IsNullOrEmpty(region))
-            region = "SH"; // Self Hosted
+        //var isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+        //var region = isDevelopment ? "DEV" : Get("REGION").ToUpper();
+        //if (string.IsNullOrEmpty(region))
+        var region = "SH"; // Self Hosted
 
         return new EnvSettings
         {
-            IsDevelopment = isDevelopment,
+            //IsDevelopment = isDevelopment,
             Region = region,
             SelfBaseUrl = MustGet("BASE_URL"),
             ConnectionString = GetOrNull("ConnectionStrings__postgresdb") ?? MustGet("DATABASE_URL"),
